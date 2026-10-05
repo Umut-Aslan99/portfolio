@@ -16,7 +16,7 @@ const c = t[lang];
       {problems.map((p, i) => {
         const demo = projects.find((x) => x.solves === p.id);
         return (
-          <article class="card reveal" style={`--i:${i}`}>
+          <article class:list={["card reveal", { featured: i === 0 }]} style={`--i:${i}`}>
             <div class="head">
               <span class="icon"><Icon name={p.icon} /></span>
               <h3>{p.title[lang]}</h3>
@@ -27,7 +27,9 @@ const c = t[lang];
             </div>
             {demo && (
               <div class="foot">
-                <span class="mono host">{demo.host}</span>
+                {demo.status === "live"
+                  ? <a class="mono host live-link" href={demo.url} target="_blank" rel="noopener">{demo.host} ↗</a>
+                  : <span class="mono host">{demo.host}</span>}
                 <span class="status" data-s={demo.status}>{c.projects.status[demo.status]}</span>
               </div>
             )}
@@ -54,6 +56,11 @@ const c = t[lang];
   .after .tag { color: var(--accent); }
   .ba p { font-size: 0.95rem; }
   .foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-top: 16px; border-top: 1px dashed var(--line-strong); }
+  .live-link { color: var(--accent); text-decoration: none; font-weight: 600; }
+  .live-link:hover { text-decoration: underline; }
   .host { font-size: 0.8rem; color: var(--text-2); overflow: hidden; text-overflow: ellipsis; }
-  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+  /* The live flagship spans the full row, before/after side by side. */
+  .featured { grid-column: 1 / -1; border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+  .featured .ba { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } .featured .ba { grid-template-columns: 1fr; } }
 </style>

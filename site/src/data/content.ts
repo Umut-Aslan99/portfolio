@@ -34,6 +34,21 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: 'field',
+    title: 'Einsatz – Serviceberichte',
+    url: 'https://svelte.umut-aslan.dev',
+    host: 'svelte.umut-aslan.dev',
+    status: 'live',
+    frontend: 'SvelteKit · BFF',
+    backend: 'C# · ASP.NET Core',
+    extras: ['GraphQL', 'EF Core', 'PostgreSQL', 'Offline-PWA', 'Playwright'],
+    solves: 'paper',
+    summary: {
+      de: 'Techniker erfassen Zeit, Material, Fotos und Unterschrift auf dem Tablet – auch ohne Netz. Der Innendienst gibt frei, der Beleg geht ins ERP, das PDF ins DMS. Architektur: Frontend · Backend-for-Frontend · Backend.',
+      en: 'Technicians record time, material, photos and the customer signature on a tablet – even offline. The office approves, the voucher goes to the ERP, the PDF to the DMS. Architecture: frontend · backend-for-frontend · backend.',
+    },
+  },
+  {
     id: 'erp',
     title: 'ERP-Cockpit',
     url: 'https://react.umut-aslan.dev',
@@ -64,33 +79,33 @@ export const projects: Project[] = [
     },
   },
   {
+    id: 'legacy',
+    title: 'Excel/VBA → Web',
+    url: 'https://blazor.umut-aslan.dev',
+    host: 'blazor.umut-aslan.dev',
+    status: 'planned',
+    frontend: 'Blazor',
+    backend: 'C# · .NET',
+    extras: ['Excel-Import', { de: 'Rollen & Rechte', en: 'Roles & permissions' }, 'Audit-Log'],
+    solves: 'legacy',
+    summary: {
+      de: 'Ein typisches Makro-Werkzeug (Kalkulation mit VBA) Schritt für Schritt in eine Mehrbenutzer-Webanwendung überführt – mit Vorher/Nachher-Vergleich.',
+      en: 'A typical macro tool (VBA-based costing sheet) migrated step by step into a multi-user web app – with a before/after comparison.',
+    },
+  },
+  {
     id: 'machines',
     title: 'Maschinen-Monitor',
-    url: 'https://svelte.umut-aslan.dev',
-    host: 'svelte.umut-aslan.dev',
+    url: 'https://vue.umut-aslan.dev',
+    host: 'vue.umut-aslan.dev',
     status: 'planned',
-    frontend: 'SvelteKit',
+    frontend: 'Vue 3',
     backend: 'Python · FastAPI',
     extras: ['MQTT', 'WebSockets', 'TimescaleDB'],
     solves: 'machines',
     summary: {
       de: 'Simulierte Maschinen senden Telemetrie per MQTT. Live-Dashboard mit OEE, Stillstandsgründen und Alarmen in Echtzeit.',
       en: 'Simulated machines stream telemetry over MQTT. Live dashboard with OEE, downtime reasons and real-time alerts.',
-    },
-  },
-  {
-    id: 'legacy',
-    title: 'Excel/VBA → Web',
-    url: 'https://vue.umut-aslan.dev',
-    host: 'vue.umut-aslan.dev',
-    status: 'planned',
-    frontend: 'Vue 3',
-    backend: 'Go',
-    extras: ['Excel-Import', { de: 'Rollen & Rechte', en: 'Roles & permissions' }, 'Audit-Log'],
-    solves: 'legacy',
-    summary: {
-      de: 'Ein typisches Makro-Werkzeug (Kalkulation mit VBA) Schritt für Schritt in eine Mehrbenutzer-Webanwendung überführt – mit Vorher/Nachher-Vergleich.',
-      en: 'A typical macro tool (VBA-based costing sheet) migrated step by step into a multi-user web app – with a before/after comparison.',
     },
   },
   {
@@ -126,13 +141,26 @@ export const projects: Project[] = [
 
 export interface Problem {
   id: string;
-  icon: 'cart' | 'chart' | 'legacy' | 'pulse';
+  icon: 'cart' | 'chart' | 'legacy' | 'pulse' | 'tablet';
   title: L10n;
   pain: L10n;
   fix: L10n;
 }
 
 export const problems: Problem[] = [
+  {
+    id: 'paper',
+    icon: 'tablet',
+    title: { de: 'Berichte auf Papier', en: 'Reports on paper' },
+    pain: {
+      de: 'Techniker schreiben Stundenzettel, das Büro tippt ab – Tage später, mit Lesefehlern. In der Halle gibt es oft kein Netz.',
+      en: 'Technicians fill in paper time sheets, the office types them up – days later, with errors. There is often no signal in the hall.',
+    },
+    fix: {
+      de: 'Bericht auf dem Tablet, offline-fähig, Unterschrift digital. Nach der Freigabe landet der Beleg automatisch im ERP.',
+      en: 'Report on the tablet, works offline, digital signature. Once approved, the voucher lands in the ERP automatically.',
+    },
+  },
   {
     id: 'cart',
     icon: 'cart',
@@ -253,11 +281,11 @@ export const education = [
 ];
 
 export const skills: { group: L10n; items: string[] }[] = [
-  { group: { de: 'Backend', en: 'Backend' }, items: ['C#', '.NET', 'ASP.NET Core', 'EF Core', 'REST', 'Swagger / OpenAPI', 'Java', 'Python'] },
-  { group: { de: 'Frontend', en: 'Frontend' }, items: ['Angular', 'TypeScript', 'HTML', 'CSS', 'Transloco', 'Astro'] },
+  { group: { de: 'Backend', en: 'Backend' }, items: ['C#', '.NET', 'ASP.NET Core', 'EF Core', 'REST', 'GraphQL', 'Swagger / OpenAPI', 'Java', 'Python'] },
+  { group: { de: 'Frontend', en: 'Frontend' }, items: ['Angular', 'SvelteKit', 'TypeScript', 'Tailwind', 'HTML', 'CSS', 'Transloco', 'Astro'] },
   { group: { de: 'Mobile', en: 'Mobile' }, items: ['.NET MAUI', 'Android', 'iOS', 'Wear OS'] },
-  { group: { de: 'Daten & Betrieb', en: 'Data & Ops' }, items: ['PostgreSQL', 'Docker', 'Traefik', 'Linux', 'Azure DevOps', 'Git'] },
-  { group: { de: 'Qualität', en: 'Quality' }, items: ['xUnit', 'Playwright', 'Code Reviews', 'Clean Code', 'Domain-Driven Design'] },
+  { group: { de: 'Daten & Betrieb', en: 'Data & Ops' }, items: ['PostgreSQL', 'Docker', 'Traefik', 'Linux', 'Azure DevOps', 'GitHub Actions', 'Git'] },
+  { group: { de: 'Qualität', en: 'Quality' }, items: ['xUnit', 'Playwright', 'Vitest', 'Code Reviews', 'Clean Code', 'Domain-Driven Design', 'ADRs'] },
   { group: { de: 'Arbeitsweise', en: 'Workflow' }, items: ['Scrum', 'Agentic Development', 'Claude Code', 'GitHub Copilot'] },
 ];
 
@@ -449,6 +477,7 @@ export type Copy = (typeof t)['de'];
 
 /** Project overview for the printable CV (/lebenslauf). */
 export const cvProjects: { title: string; tag: string; text: string }[] = [
+  { title: 'Einsatz – Serviceberichte (svelte.umut-aslan.dev)', tag: 'SvelteKit-BFF · C# ASP.NET Core · GraphQL · PostgreSQL · Docker', text: 'Offlinefähige Techniker-App mit Freigabe-Workflow, ERP-Export (XML) und DMS-Ablage (PDF). Architektur Frontend · Backend-for-Frontend · Backend; idempotente Offline-Synchronisation; 33 automatisierte Tests (xUnit, Vitest, Playwright); CI/CD, ADRs.' },
   { title: 'SkulInsight QoL', tag: 'C# · BepInEx · Harmony · veröffentlicht', text: 'Mod für „Skul: The Hero Slayer“, agentisch entwickelt: echte Schadenswerte, Kampf-Log mit JSON-Export, Bestiarium, 11 Sprachen. Selbsttest aller Hooks beim Start, eigenes Testprojekt, regelmäßige Releases auf Thunderstore.' },
   { title: 'umut-aslan.dev', tag: 'Astro · TypeScript · Docker · Traefik', text: 'Portfolio und eigene Infrastruktur: zweisprachige Seite, Playwright-Tests gegen das Produktions-Image, Container hinter Traefik mit automatischem HTTPS.' },
   { title: 'GlobalPenfriends', tag: '.NET MAUI · C#', text: 'Plattformübergreifende App mit Registrierung, Profilen, Suche, Direktnachrichten und Monetarisierung.' },
