@@ -16,4 +16,4 @@ RUN npx astro check && npx astro build
 FROM nginx:alpine AS runtime
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
-HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://127.0.0.1/healthz >/dev/null || exit 1
+HEALTHCHECK --interval=30s --timeout=3s --start-period=20s --start-interval=1s CMD wget -qO- http://127.0.0.1/healthz >/dev/null || exit 1
