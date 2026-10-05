@@ -1,0 +1,59 @@
+---
+import Icon from './Icon.astro';
+import { t, problems, projects, type Lang } from '../data/content';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const c = t[lang];
+---
+<section id="problems" aria-labelledby="problems-title">
+  <div class="wrap">
+    <p class="eyebrow reveal"><b>01</b>{c.nav.problems}</p>
+    <h2 id="problems-title" class="section-title reveal">{c.problems.title}</h2>
+    <p class="section-intro reveal">{c.problems.intro}</p>
+
+    <div class="grid">
+      {problems.map((p, i) => {
+        const demo = projects.find((x) => x.solves === p.id);
+        return (
+          <article class="card reveal" style={`--i:${i}`}>
+            <div class="head">
+              <span class="icon"><Icon name={p.icon} /></span>
+              <h3>{p.title[lang]}</h3>
+            </div>
+            <div class="ba">
+              <div class="before"><span class="tag">{c.problems.pain}</span><p>{p.pain[lang]}</p></div>
+              <div class="after"><span class="tag">{c.problems.fix}</span><p>{p.fix[lang]}</p></div>
+            </div>
+            {demo && (
+              <div class="foot">
+                <span class="mono host">{demo.host}</span>
+                <span class="status" data-s={demo.status}>{c.projects.status[demo.status]}</span>
+              </div>
+            )}
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 56px; }
+  article { padding: clamp(22px, 3vw, 32px); display: flex; flex-direction: column; gap: 22px; }
+  .head { display: flex; align-items: center; gap: 14px; }
+  .icon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; flex: none; background: var(--glow); color: var(--accent); }
+  .icon :global(svg) { width: 22px; height: 22px; }
+  h3 { font-size: clamp(1.25rem, 2.2vw, 1.5rem); }
+  .ba { display: grid; gap: 12px; flex: 1; }
+  .ba > div { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--line); }
+  .before { background: var(--bg-2); }
+  .before p { color: var(--text-2); }
+  .after { background: linear-gradient(135deg, var(--glow), transparent 70%); border-color: color-mix(in srgb, var(--accent) 30%, transparent) !important; }
+  .tag { display: block; font: 600 0.7rem/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 8px; }
+  .after .tag { color: var(--accent); }
+  .ba p { font-size: 0.95rem; }
+  .foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-top: 16px; border-top: 1px dashed var(--line-strong); }
+  .host { font-size: 0.8rem; color: var(--text-2); overflow: hidden; text-overflow: ellipsis; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+</style>

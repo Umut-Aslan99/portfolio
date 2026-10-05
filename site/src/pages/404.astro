@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base lang="de" title="404 – Seite nicht gefunden">
+  <section class="wrap nf">
+    <p class="mono code">HTTP 404</p>
+    <h1>Diese Route kennt Traefik nicht.</h1>
+    <p>Die Seite existiert nicht (mehr). <span lang="en">This page does not exist.</span></p>
+    <a class="btn btn-primary" href="/">Zur Startseite</a>
+  </section>
+</Base>
+<style>
+  .nf { min-height: 60vh; display: flex; flex-direction: column; justify-content: center; gap: 20px; align-items: flex-start; }
+  .code { color: var(--accent); }
+  h1 { font-size: clamp(2rem, 6vw, 4rem); max-width: 16ch; }
+  p { color: var(--text-2); }
+</style>

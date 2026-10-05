@@ -1,0 +1,69 @@
+---
+import Icon from './Icon.astro';
+import { t, type Lang } from '../data/content';
+import { buildInfo } from '../lib/build';
+import { countTests } from '../lib/tests';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const c = t[lang].pipeline;
+const tests = countTests();
+const built = new Date(buildInfo.date).toLocaleString(lang === 'de' ? 'de-DE' : 'en-GB', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Europe/Berlin' });
+---
+<section class="pipeline" aria-labelledby="pipe-title">
+  <div class="wrap">
+    <p class="eyebrow reveal"><b>04</b>Lifecycle</p>
+    <h2 id="pipe-title" class="section-title reveal">{c.title}</h2>
+    <p class="section-intro reveal">{c.intro}</p>
+
+    <ol class="track">
+      {c.stages.map(([name, desc], i) => (
+        <li class="reveal" style={`--i:${i}`}>
+          <span class="node"><Icon name="check" /></span>
+          <strong class="mono">{name}</strong>
+          <span>{desc}</span>
+        </li>
+      ))}
+    </ol>
+
+    <dl class="meta mono reveal">
+      <div><dt>{c.commit}</dt><dd>{buildInfo.sha}</dd></div>
+      <div><dt>{c.built}</dt><dd>{built}</dd></div>
+      <div><dt>Tests</dt><dd>{tests} · Chromium</dd></div>
+      <div><dt>Cookies</dt><dd>0</dd></div>
+    </dl>
+    <p class="privacy reveal">{c.privacy}</p>
+  </div>
+</section>
+
+<style>
+  .track { list-style: none; padding: 0; margin: 56px 0 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); position: relative; }
+  .track::before {
+    content: ''; position: absolute; top: 19px; left: 20px; right: 20px; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent)); background-size: 200% 100%;
+    animation: flow 3s linear infinite; opacity: 0.7;
+  }
+  @keyframes flow { to { background-position: -200% 0; } }
+  .track li { position: relative; display: flex; flex-direction: column; gap: 6px; padding-right: 14px; }
+  .node {
+    width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; margin-bottom: 10px;
+    background: var(--surface); border: 2px solid var(--accent); color: var(--accent); position: relative;
+  }
+  .node :global(svg) { width: 18px; height: 18px; }
+  .track strong { font-size: 0.95rem; }
+  .track span:last-child { font-size: 0.86rem; color: var(--text-2); }
+
+  .meta { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; margin: 48px 0 0; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .meta div { background: var(--surface); padding: 16px 18px; }
+  .meta dt { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .meta dd { margin: 6px 0 0; font-size: 0.95rem; color: var(--text); }
+  .privacy { margin-top: 16px; font-size: 0.88rem; color: var(--text-2); }
+
+  @media (max-width: 860px) {
+    .track { grid-template-columns: 1fr; gap: 18px; }
+    .track::before { top: 20px; bottom: 20px; left: 19px; right: auto; width: 2px; height: auto; background: var(--accent); animation: none; }
+    .track li { display: grid; grid-template-columns: 40px 1fr; column-gap: 16px; }
+    .node { grid-row: span 2; margin: 0; }
+    .meta { grid-template-columns: 1fr 1fr; }
+  }
+</style>

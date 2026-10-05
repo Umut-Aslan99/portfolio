@@ -1,0 +1,21 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { profile } from '../data/content';
+---
+<Legal title="Impressum">
+  <h2>Angaben gemäß § 5 DDG</h2>
+  <address>
+    Umut Aslan<br />
+    Brunnenstraße 6<br />
+    44145 Dortmund
+  </address>
+
+  <h2>Kontakt</h2>
+  <p>E-Mail: <a href={`mailto:${profile.email}`}>{profile.email}</a></p>
+
+  <h2>Haftung für Inhalte und Links</h2>
+  <p>Die Inhalte dieser Seite wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität kann jedoch keine Gewähr übernommen werden. Für Inhalte externer Links sind ausschließlich deren Betreiber verantwortlich; zum Zeitpunkt der Verlinkung waren keine Rechtsverstöße erkennbar.</p>
+
+  <h2>Demo-Projekte</h2>
+  <p>Die unter den Subdomains von umut-aslan.dev verlinkten Anwendungen sind Demonstrationsprojekte mit fiktiven Daten. Sie dienen ausschließlich der Präsentation und sind nicht für den produktiven Einsatz bestimmt.</p>
+</Legal>

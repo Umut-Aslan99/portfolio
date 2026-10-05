@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://umut-aslan.dev/sitemap-index.xml

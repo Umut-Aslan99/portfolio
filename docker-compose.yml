@@ -1,0 +1,26 @@
+# Main site umut-aslan.dev behind the shared Traefik proxy (~/traefik).
+# PORTFOLIO_RULE in .env decides which host(s) this container answers on.
+services:
+  web:
+    build:
+      context: ./site
+      args:
+        GIT_SHA: ${GIT_SHA:-local}
+        BUILD_DATE: ${BUILD_DATE:-}
+    image: umutaslan/portfolio:${GIT_SHA:-local}
+    container_name: portfolio
+    restart: unless-stopped
+    read_only: true
+    tmpfs: [/var/cache/nginx, /var/run, /tmp]
+    security_opt: [no-new-privileges:true]
+    networks: [proxy]
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.portfolio.rule=${PORTFOLIO_RULE}
+      - traefik.http.routers.portfolio.entrypoints=websecure
+      - traefik.http.routers.portfolio.tls.certresolver=myresolver
+      - traefik.http.services.portfolio.loadbalancer.server.port=80
+
+networks:
+  proxy:
+    external: true

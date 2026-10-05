@@ -1,0 +1,23 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { profile } from '../data/content';
+---
+<Legal title="Datenschutzerklärung">
+  <h2>1. Verantwortlicher</h2>
+  <p>Umut Aslan, Brunnenstraße 6, 44145 Dortmund, <a href={`mailto:${profile.email}`}>{profile.email}</a></p>
+
+  <h2>2. Das Wichtigste vorab</h2>
+  <p>Diese Website setzt keine Cookies, verwendet kein Tracking und keine Analyse-Werkzeuge und lädt keine Inhalte von Drittanbietern. Schriftarten werden vom eigenen Server ausgeliefert. Lediglich die gewählte Farbdarstellung (hell/dunkel) wird – falls Sie sie umschalten – im lokalen Speicher Ihres Browsers abgelegt und nie übertragen.</p>
+
+  <h2>3. Hosting und Server-Logfiles</h2>
+  <p>Die Website wird auf einem Server der netcup GmbH, Daimlerstraße 25, 76185 Karlsruhe, in einem Rechenzentrum in Deutschland betrieben. Beim Aufruf verarbeitet der Server technisch notwendige Daten: IP-Adresse, Datum und Uhrzeit, aufgerufene Seite, übertragene Datenmenge, Referrer und Browserkennung. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO; das berechtigte Interesse liegt im sicheren und stabilen Betrieb. Die Daten werden nicht mit anderen Datenquellen zusammengeführt und nach spätestens 14 Tagen gelöscht.</p>
+
+  <h2>4. Kontakt per E-Mail</h2>
+  <p>Wenn Sie mir eine E-Mail schreiben, verarbeite ich Ihre Angaben zur Bearbeitung der Anfrage (Art. 6 Abs. 1 lit. b DSGVO bei vorvertraglichen Anfragen, sonst lit. f). Die Daten werden gelöscht, sobald sie nicht mehr erforderlich sind und keine gesetzlichen Aufbewahrungspflichten bestehen.</p>
+
+  <h2>5. Externe Links</h2>
+  <p>Links zu GitHub oder Thunderstore führen zu Angeboten anderer Anbieter. Erst beim Anklicken werden Daten an diese übertragen; es gelten deren Datenschutzbestimmungen.</p>
+
+  <h2>6. Ihre Rechte</h2>
+  <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch (Art. 15–21 DSGVO) sowie das Recht auf Beschwerde bei einer Aufsichtsbehörde, z. B. der Landesbeauftragten für Datenschutz und Informationsfreiheit Nordrhein-Westfalen.</p>
+</Legal>

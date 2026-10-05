@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from './Hero.astro';
+import Problems from './Problems.astro';
+import Projects from './Projects.astro';
+import Method from './Method.astro';
+import Pipeline from './Pipeline.astro';
+import Resume from './Resume.astro';
+import Contact from './Contact.astro';
+import type { Lang } from '../data/content';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+---
+<Base lang={lang}>
+  <Hero lang={lang} />
+  <Problems lang={lang} />
+  <Projects lang={lang} />
+  <Method lang={lang} />
+  <Pipeline lang={lang} />
+  <Resume lang={lang} />
+  <Contact lang={lang} />
+</Base>

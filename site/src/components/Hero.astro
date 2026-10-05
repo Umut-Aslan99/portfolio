@@ -1,0 +1,152 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Icon from './Icon.astro';
+import { t, profile, projects, type Lang } from '../data/content';
+import { buildInfo, yearsSince } from '../lib/build';
+import { countTests } from '../lib/tests';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const c = t[lang];
+const home = lang === 'de' ? '/' : '/en/';
+
+// Drop a portrait at src/assets/me.(jpg|png|webp) and it replaces the monogram automatically.
+const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/me.{jpg,jpeg,png,webp}', { eager: true });
+const photo = Object.values(photos)[0]?.default;
+
+const subdomains = projects.filter((p) => p.host.endsWith(profile.domain)).length;
+const stacks = new Set(projects.flatMap((p) => [p.frontend, p.backend])).size;
+const stats = [yearsSince(2024, 10), subdomains, stacks];
+const tests = countTests();
+const built = new Date(buildInfo.date).toLocaleDateString(lang === 'de' ? 'de-DE' : 'en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+const headline = lang === 'de'
+  ? ['Software, die in der', 'Werkhalle', 'funktioniert.']
+  : ['Software that works', 'on the shop', 'floor.'];
+---
+<section class="hero" aria-labelledby="hero-title">
+  <div class="bg" aria-hidden="true"><div class="grid"></div><div class="blob"></div></div>
+  <div class="wrap hero-grid">
+    <div class="copy">
+      <p class="kicker mono reveal"><span class="dot"></span>{c.hero.kicker}</p>
+      <h1 id="hero-title" class="reveal" style="--i:1">
+        {headline[0]} <em>{headline[1]}</em> {headline[2]}
+      </h1>
+      <p class="lead reveal" style="--i:2">{c.hero.lead} <strong>{c.hero.lead2}</strong></p>
+      <div class="ctas reveal" style="--i:3">
+        <a class="btn btn-primary" href={`${home}#projects`}>{c.hero.ctaPrimary}<Icon name="arrow" /></a>
+        <a class="btn" href={`${home}#contact`}>{c.hero.ctaSecondary}</a>
+      </div>
+      <dl class="stats reveal" style="--i:4">
+        {stats.map((n, i) => (
+          <div><dt class="sr-only">{c.hero.stats[i]}</dt><dd><span class="num" data-count={n}>{n}</span><span class="lbl">{c.hero.stats[i]}</span></dd></div>
+        ))}
+      </dl>
+    </div>
+
+    <div class="side reveal" style="--i:2">
+      <div class="card idcard">
+        <div class="photo">
+          {photo
+            ? <Image src={photo} alt={profile.name} width={320} height={380} loading="eager" />
+            : <div class="monogram" aria-hidden="true">UA</div>}
+        </div>
+        <dl class="facts">
+          <dt>Name</dt><dd>{profile.name}</dd>
+          <dt>{lang === 'de' ? 'Rolle' : 'Role'}</dt><dd>Full-Stack</dd>
+          <dt>{lang === 'de' ? 'Region' : 'Based in'}</dt><dd>Bocholt · Dortmund</dd>
+          <dt>Stack</dt><dd>C# · .NET · TS</dd>
+        </dl>
+      </div>
+
+      <div class="card term" data-terminal role="img" aria-label={lang === 'de' ? 'Deployment-Protokoll dieser Seite' : 'Deployment log of this site'}>
+        <div class="term-bar"><i></i><i></i><i></i><span class="mono">deploy — umut-aslan.dev</span></div>
+        <pre class="mono"><span data-line="500"><b class="p">$</b> git push origin main</span>
+<span data-line="420"><b class="ok">✓</b> astro check     <em>types ok</em></span>
+<span data-line="420"><b class="ok">✓</b> astro build     <em>static</em></span>
+<span data-line="520"><b class="ok">✓</b> playwright      <em>{tests} tests</em></span>
+<span data-line="460"><b class="ok">✓</b> docker build    <em>web:{buildInfo.sha}</em></span>
+<span data-line="460"><b class="ok">✓</b> traefik         <em>tls · hsts</em></span>
+<span data-line="0"><b class="live">●</b> live            <em>{built}</em><i class="caret"></i></span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { padding-block: clamp(48px, 8vw, 110px) clamp(64px, 9vw, 120px); overflow: hidden; isolation: isolate; }
+  .bg { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+  .grid {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(var(--line-strong) 1px, transparent 1px);
+    background-size: 26px 26px;
+    mask-image: radial-gradient(ellipse 70% 60% at 60% 30%, #000 30%, transparent 75%);
+  }
+  .blob {
+    position: absolute; width: 620px; height: 620px; right: -120px; top: -180px; border-radius: 50%;
+    background: radial-gradient(circle, var(--glow) 0%, transparent 65%);
+    filter: blur(20px); animation: drift 18s ease-in-out infinite alternate;
+  }
+  @keyframes drift { to { transform: translate(-160px, 120px) scale(1.15); } }
+
+  .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(32px, 6vw, 80px); align-items: center; }
+  .kicker { display: inline-flex; align-items: center; gap: 10px; font-size: 0.8rem; color: var(--muted); letter-spacing: 0.02em; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px var(--glow); }
+  h1 { font-size: clamp(2.6rem, 7.2vw, 5.6rem); line-height: 0.98; letter-spacing: -0.035em; margin-top: 22px; font-weight: 700; }
+  h1 em {
+    font-style: normal; color: transparent;
+    background: linear-gradient(100deg, var(--accent) 10%, var(--accent-2) 60%, var(--accent) 90%);
+    background-size: 200% 100%; -webkit-background-clip: text; background-clip: text;
+    animation: sheen 6s linear infinite;
+  }
+  @keyframes sheen { to { background-position: -200% 0; } }
+  .lead { margin-top: 26px; font-size: clamp(1.05rem, 1.7vw, 1.22rem); color: var(--text-2); max-width: 54ch; }
+  .lead strong { color: var(--text); font-weight: 600; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 48px 0 0; max-width: 520px; }
+  .stats dd { margin: 0; display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--line-strong); padding-top: 14px; }
+  .num { font: 700 clamp(1.8rem, 3.6vw, 2.5rem)/1 var(--font-display); }
+  .lbl { font-size: 0.8rem; color: var(--text-2); line-height: 1.35; }
+
+  .side { position: relative; display: grid; gap: 18px; }
+  .idcard { display: grid; grid-template-columns: 132px 1fr; gap: 20px; padding: 18px; align-items: center; }
+  .photo { aspect-ratio: 32 / 38; border-radius: 10px; overflow: hidden; background: #000; }
+  .photo :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .monogram {
+    height: 100%; display: grid; place-items: center; font: 700 2.6rem/1 var(--font-display); color: #f4f1ea;
+    background: linear-gradient(160deg, #1d1d21, #000); position: relative;
+  }
+  .monogram::after { content: ''; position: absolute; left: 0; bottom: 0; width: 55%; height: 6px; background: #e8834a; }
+  .facts { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0; font-size: 0.88rem; }
+  .facts dt { color: var(--muted); }
+  .facts dd { margin: 0; font-weight: 500; }
+
+  .term { background: #0d0d0f; border-color: rgb(255 255 255 / 0.1); color: #e8e4dc; margin-left: clamp(0px, 4vw, 48px); }
+  .term::before { display: none; }
+  .term-bar { display: flex; align-items: center; gap: 7px; padding: 12px 14px; border-bottom: 1px solid rgb(255 255 255 / 0.08); }
+  .term-bar i { width: 10px; height: 10px; border-radius: 50%; background: #3a3a40; }
+  .term-bar i:first-child { background: #e8834a; }
+  .term-bar span { margin-left: 8px; font-size: 0.72rem; color: #8b877f; }
+  pre { margin: 0; padding: 16px 18px 18px; font-size: clamp(0.72rem, 1.4vw, 0.82rem); line-height: 1.85; overflow-x: auto; white-space: pre; }
+  pre span { display: block; }
+  :global(.js) pre span { opacity: 0; transform: translateX(-6px); transition: opacity 0.3s, transform 0.3s var(--ease); }
+  :global(.js) pre span:global(.on) { opacity: 1; transform: none; }
+  pre b { font-weight: 600; margin-right: 6px; }
+  pre em { font-style: normal; color: #a7ab8c; }
+  .p { color: #e8834a; }
+  .ok { color: #5fd38d; }
+  .live { color: #5fd38d; }
+  .caret { display: inline-block; width: 8px; height: 1em; background: #e8834a; vertical-align: -2px; margin-left: 6px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  @media (max-width: 960px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .term { margin-left: 0; }
+  }
+  @media (max-width: 420px) {
+    .idcard { grid-template-columns: 96px 1fr; gap: 14px; }
+    .stats { gap: 10px; }
+  }
+</style>

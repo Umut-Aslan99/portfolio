@@ -1,0 +1,110 @@
+---
+import Icon from './Icon.astro';
+import { t, profile, projects, problems, type Lang, type Status } from '../data/content';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const c = t[lang];
+
+const order: Record<Status, number> = { live: 0, building: 1, planned: 2 };
+const sorted = [...projects].sort((a, b) => order[a.status] - order[b.status]);
+const routed = sorted.filter((p) => p.host.endsWith(profile.domain));
+const statusGlyph: Record<Status, string> = { live: '●', building: '◐', planned: '○' };
+---
+<section id="projects" aria-labelledby="projects-title">
+  <div class="wrap">
+    <p class="eyebrow reveal"><b>02</b>{c.nav.projects}</p>
+    <div class="top">
+      <div>
+        <h2 id="projects-title" class="section-title reveal">{c.projects.title}</h2>
+        <p class="section-intro reveal">{c.projects.intro}</p>
+      </div>
+      <div class="card routes reveal" style="--i:2" aria-label="Traefik routing">
+        <div class="routes-head mono"><span>traefik</span><span>:443</span></div>
+        <ul class="mono">
+          <li class="root"><span class="host">{profile.domain}</span><span class="g" data-s="live">●</span></li>
+          {routed.map((p, i) => (
+            <li>
+              <span class="branch">{i === routed.length - 1 ? '└' : '├'}</span>
+              <span class="host">{p.host.replace(`.${profile.domain}`, '')}<i>.{profile.domain}</i></span>
+              <span class="g" data-s={p.status} title={c.projects.status[p.status]}>{statusGlyph[p.status]}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="list">
+      {sorted.map((p, i) => {
+        const live = p.status === 'live';
+        const solves = problems.find((x) => x.id === p.solves);
+        return (
+          <article class="card reveal" data-status={p.status} style={`--i:${i % 3}`}>
+            <div class="urlbar mono">
+              <span class="lock" aria-hidden="true">https://</span><span class="u">{p.host}</span>
+              <span class="status" data-s={p.status}>{c.projects.status[p.status]}</span>
+            </div>
+            <div class="body">
+              <h3>{p.title}</h3>
+              <p class="sum">{p.summary[lang]}</p>
+              {solves && <p class="solves"><span>{c.projects.solves}:</span> {solves.title[lang]}</p>}
+              <dl class="stack">
+                <div><dt>Frontend</dt><dd>{p.frontend}</dd></div>
+                <div><dt>Backend</dt><dd>{p.backend}</dd></div>
+              </dl>
+              <div class="chips">{p.extras.map((x) => <span class="chip">{typeof x === 'string' ? x : x[lang]}</span>)}</div>
+            </div>
+            {(live || p.repo) && (
+              <div class="actions">
+                {live && <a class="link" href={p.url} target="_blank" rel="noopener">{c.projects.open} <Icon name="external" /></a>}
+                {p.repo && <a class="link" href={p.repo} target="_blank" rel="noopener">{c.projects.code} <Icon name="github" /></a>}
+              </div>
+            )}
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .top { display: grid; grid-template-columns: 1fr minmax(0, 400px); gap: 40px; align-items: end; }
+  .routes { padding: 0; background: #0d0d0f; color: #e8e4dc; border-color: rgb(255 255 255 / 0.1); }
+  .routes::before { display: none; }
+  .routes-head { display: flex; justify-content: space-between; padding: 12px 16px; font-size: 0.72rem; color: #8b877f; border-bottom: 1px solid rgb(255 255 255 / 0.08); }
+  .routes ul { list-style: none; margin: 0; padding: 12px 16px 16px; font-size: 0.8rem; line-height: 2; }
+  .routes li { display: flex; align-items: center; gap: 8px; }
+  .routes .root { font-weight: 600; color: #fff; }
+  .branch { color: #55555c; padding-left: 4px; }
+  .routes .host { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .routes .host i { font-style: normal; color: #6c6c73; }
+  .g[data-s='live'] { color: #5fd38d; }
+  .g[data-s='building'] { color: #f1c75b; }
+  .g[data-s='planned'] { color: #6c7690; }
+
+  .list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 56px; }
+  article { display: flex; flex-direction: column; }
+  article:hover { transform: translateY(-4px); }
+  article[data-status='planned'] { border-style: dashed; border-color: var(--line-strong); }
+  .urlbar { display: flex; align-items: center; gap: 0; padding: 11px 14px; font-size: 0.74rem; background: var(--bg-2); border-bottom: 1px solid var(--line); }
+  .lock { color: var(--muted); }
+  .u { color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .urlbar .status { margin-left: auto; padding-left: 12px; flex: none; }
+  .body { padding: 22px 22px 18px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
+  h3 { font-size: 1.35rem; }
+  .sum { color: var(--text-2); font-size: 0.94rem; flex: 1; }
+  .solves { font-size: 0.84rem; color: var(--text); }
+  .solves span { color: var(--accent); font-weight: 600; }
+  .stack { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0; }
+  .stack div { border-left: 2px solid var(--accent); padding-left: 10px; }
+  .stack dt { font: 500 0.68rem/1.2 var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  .stack dd { margin: 3px 0 0; font-weight: 600; font-size: 0.9rem; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .actions { display: flex; gap: 18px; padding: 14px 22px; border-top: 1px solid var(--line); }
+  .link { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: 0.9rem; text-decoration: none; color: var(--accent); }
+  .link :global(svg) { width: 15px; height: 15px; }
+  .link:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+  @media (max-width: 1000px) { .list { grid-template-columns: repeat(2, minmax(0, 1fr)); } .top { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) { .list { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,137 @@
+---
+import '../styles/global.css';
+import Icon from '../components/Icon.astro';
+import { t, profile, type Lang } from '../data/content';
+import { buildInfo } from '../lib/build';
+
+interface Props { lang: Lang; title?: string; description?: string; alternate?: string; }
+const { lang, title, description, alternate } = Astro.props;
+const c = t[lang];
+const pageTitle = title ?? c.meta.title;
+const pageDesc = description ?? c.meta.description;
+const home = lang === 'de' ? '/' : '/en/';
+const other = alternate ?? (lang === 'de' ? '/en/' : '/');
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const nav = [
+  ['problems', c.nav.problems], ['projects', c.nav.projects], ['method', c.nav.method], ['cv', c.nav.cv],
+] as const;
+---
+<!doctype html>
+<html lang={lang}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDesc} />
+  <link rel="canonical" href={canonical} />
+  <link rel="alternate" hreflang="de" href={new URL('/', Astro.site)} />
+  <link rel="alternate" hreflang="en" href={new URL('/en/', Astro.site)} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta name="theme-color" content="#000000" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDesc} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:locale" content={lang === 'de' ? 'de_DE' : 'en_US'} />
+  <meta name="generator" content={`${Astro.generator} · ${buildInfo.sha}`} />
+  <script is:inline>
+    // Apply stored theme before first paint to avoid a flash.
+    try { const s = localStorage.getItem('theme'); if (s) document.documentElement.dataset.theme = s; } catch {}
+    document.documentElement.classList.add('js');
+  </script>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org', '@type': 'Person', name: profile.name, url: `https://${profile.domain}`,
+    email: `mailto:${profile.email}`, jobTitle: lang === 'de' ? 'Full-Stack-Entwickler' : 'Full-Stack Developer',
+    sameAs: [profile.github], address: { '@type': 'PostalAddress', addressLocality: 'Dortmund', addressCountry: 'DE' },
+  })} />
+</head>
+<body>
+  <a class="skip" href="#main">{lang === 'de' ? 'Zum Inhalt' : 'Skip to content'}</a>
+
+  <header class="band">
+    <div class="wrap band-inner">
+      <a href={home} class="brand" aria-label={profile.name}>{profile.name}</a>
+      <nav aria-label="Main">
+        <ul>
+          {nav.map(([id, label]) => <li><a href={`${home}#${id}`}>{label}</a></li>)}
+        </ul>
+      </nav>
+      <div class="tools">
+        <a class="tool lang" href={other} hreflang={lang === 'de' ? 'en' : 'de'} lang={lang === 'de' ? 'en' : 'de'}>{lang === 'de' ? 'EN' : 'DE'}<span class="sr-only"> – {c.switchLang}</span></a>
+        <button class="tool" id="theme" type="button" aria-label={c.theme}>
+          <Icon name="sun" class="i-sun" /><Icon name="moon" class="i-moon" />
+        </button>
+        <a class="btn btn-primary band-cta" href={`${home}#contact`}>{c.nav.contact}</a>
+      </div>
+    </div>
+    <div class="bar" aria-hidden="true"></div>
+  </header>
+
+  <main id="main"><slot /></main>
+
+  <footer class="foot">
+    <div class="wrap foot-inner">
+      <div>
+        <strong>{profile.name}</strong>
+        <span class="muted">{c.footer.source}</span>
+      </div>
+      <div class="foot-links">
+        <a href="/impressum/">{c.footer.imprint}</a>
+        <a href="/datenschutz/">{c.footer.privacy}</a>
+        <a href={profile.github} rel="noopener" target="_blank">GitHub</a>
+        <span class="mono build" title={buildInfo.date}>build {buildInfo.sha}</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    import { initSite } from '../lib/client';
+    initSite();
+  </script>
+</body>
+</html>
+
+<style>
+  /* The CV header band: always black, orange bar underneath doubles as scroll progress. */
+  .band {
+    position: sticky; top: 0; z-index: 50;
+    background: rgb(0 0 0 / 0.86); color: #f4f1ea;
+    backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  }
+  .band-inner { display: flex; align-items: center; gap: 24px; height: 64px; }
+  .brand { font: 700 1.15rem/1 var(--font-display); text-decoration: none; letter-spacing: -0.01em; white-space: nowrap; }
+  .bar {
+    height: 6px; background: #e8834a;
+    width: calc(38% + 62% * var(--progress, 0));
+    transition: width 0.1s linear;
+  }
+  nav { margin-left: auto; }
+  nav ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
+  nav a {
+    display: block; padding: 8px 12px; border-radius: 999px; text-decoration: none;
+    font-size: 0.9rem; color: #c9c5bc; transition: color 0.2s, background 0.2s;
+  }
+  nav a:hover, nav a[aria-current='true'] { color: #fff; background: rgb(255 255 255 / 0.08); }
+  .tools { display: flex; align-items: center; gap: 6px; }
+  .tool {
+    display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%;
+    border: 1px solid rgb(255 255 255 / 0.14); background: none; color: #f4f1ea; cursor: pointer;
+    font: 600 0.75rem/1 var(--font-mono); text-decoration: none; transition: border-color 0.2s, background 0.2s;
+  }
+  .tool:hover { border-color: rgb(255 255 255 / 0.4); background: rgb(255 255 255 / 0.06); }
+  .tool :global(svg) { width: 17px; height: 17px; }
+  .band-cta { padding: 10px 16px; font-size: 0.88rem; margin-left: 6px; color: #1a0d05; background: #e8834a; border-color: #e8834a; }
+  :global([data-theme-resolved='light'] .i-sun), :global([data-theme-resolved='dark'] .i-moon) { display: none; }
+
+  @media (max-width: 900px) { nav { display: none; } .tools { margin-left: auto; } }
+  @media (max-width: 420px) { .band-cta { display: none; } }
+
+  .foot { border-top: 1px solid var(--line); padding: 32px 0 40px; font-size: 0.88rem; }
+  .foot-inner { display: flex; flex-wrap: wrap; gap: 16px 32px; justify-content: space-between; align-items: center; }
+  .foot-inner > div:first-child { display: flex; flex-direction: column; gap: 2px; }
+  .muted { color: var(--text-2); }
+  .foot-links { display: flex; flex-wrap: wrap; gap: 8px 22px; align-items: center; }
+  .foot-links a { color: var(--text-2); text-decoration: none; }
+  .foot-links a:hover { color: var(--accent); }
+  .build { color: var(--muted); font-size: 0.76rem; }
+</style>

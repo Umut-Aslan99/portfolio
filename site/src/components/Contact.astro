@@ -1,0 +1,47 @@
+---
+import Icon from './Icon.astro';
+import { t, profile, type Lang } from '../data/content';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const c = t[lang].contact;
+const subject = encodeURIComponent(lang === 'de' ? 'Projektanfrage' : 'Project inquiry');
+---
+<section id="contact" aria-labelledby="contact-title">
+  <div class="wrap">
+    <div class="panel reveal">
+      <p class="eyebrow"><b>06</b>{t[lang].nav.contact}</p>
+      <h2 id="contact-title">{c.title}</h2>
+      <p class="text">{c.text}</p>
+      <div class="actions">
+        <a class="btn btn-primary" href={`mailto:${profile.email}?subject=${subject}`}><Icon name="mail" />{c.cta}</a>
+        <button class="btn copy" type="button" data-copy={profile.email} data-done={c.copied}><Icon name="copy" /><span>{c.copy}</span></button>
+      </div>
+      <p class="addr mono">{profile.email}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .panel {
+    position: relative; overflow: hidden; border-radius: calc(var(--radius) + 6px);
+    background: #000; color: #f4f1ea; padding: clamp(32px, 7vw, 88px);
+  }
+  .panel::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(600px circle at 85% 0%, rgb(232 131 74 / 0.28), transparent 60%),
+                radial-gradient(rgb(255 255 255 / 0.08) 1px, transparent 1px) 0 0 / 22px 22px;
+  }
+  .panel::after { content: ''; position: absolute; left: 0; bottom: 0; height: 8px; width: 40%; background: #e8834a; }
+  .panel > * { position: relative; }
+  .eyebrow { color: #a7ab8c; }
+  .eyebrow::after { background: rgb(255 255 255 / 0.16); }
+  h2 { font-size: clamp(2.2rem, 6vw, 4.4rem); margin-top: 24px; max-width: 16ch; letter-spacing: -0.035em; }
+  .text { margin-top: 20px; color: #c9c5bc; max-width: 56ch; font-size: clamp(1rem, 1.6vw, 1.15rem); }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+  .btn-primary { background: #e8834a; border-color: #e8834a; color: #1a0d05; }
+  .copy { color: #f4f1ea; border-color: rgb(255 255 255 / 0.2); }
+  .copy:hover { border-color: rgb(255 255 255 / 0.5); }
+  .copy:hover :global(svg) { transform: none; }
+  .addr { margin-top: 22px; font-size: 0.85rem; color: #8b877f; word-break: break-all; }
+</style>

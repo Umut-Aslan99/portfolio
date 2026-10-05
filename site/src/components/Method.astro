@@ -1,0 +1,102 @@
+---
+import Icon from './Icon.astro';
+import { t, type Lang } from '../data/content';
+import { getModStats } from '../lib/build';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const c = t[lang].method;
+const mod = await getModStats();
+const stats = [mod.releases, mod.daysToLatest, mod.downloads, 11];
+---
+<section id="method" aria-labelledby="method-title" class="method">
+  <div class="wrap">
+    <p class="eyebrow reveal"><b>03</b>{t[lang].nav.method}</p>
+    <h2 id="method-title" class="section-title reveal">{c.title}</h2>
+    <p class="section-intro reveal">{c.intro}</p>
+
+    <ol class="steps">
+      {c.steps.map(([title, text], i) => (
+        <li class="reveal" style={`--i:${i}`}>
+          <span class="n mono">{String(i + 1).padStart(2, '0')}</span>
+          <h3>{title}</h3>
+          <p>{text}</p>
+        </li>
+      ))}
+    </ol>
+
+    <article class="card case reveal" aria-labelledby="case-title">
+      <div class="case-copy">
+        <p class="case-kicker mono">{c.caseKicker} · C# · BepInEx · Harmony</p>
+        <h3 id="case-title">{c.caseTitle}</h3>
+        <p class="case-lead">{c.caseLead}</p>
+        <ul class="points">
+          {c.casePoints.map(([h, p]) => (
+            <li><Icon name="check" /><div><strong>{h}</strong><span>{p}</span></div></li>
+          ))}
+        </ul>
+        <div class="links">
+          <a class="btn btn-primary" href="https://thunderstore.io/c/skul-the-hero-slayer/p/DocRun/SkulInsight_QoL/" target="_blank" rel="noopener">{c.caseLinks[0]}<Icon name="external" /></a>
+          <a class="btn" href="https://github.com/Umut-Aslan99/SkulInsight_QoL" target="_blank" rel="noopener"><Icon name="github" />{c.caseLinks[1]}</a>
+        </div>
+      </div>
+      <div class="case-side">
+        <dl class="kpis">
+          {stats.map((n, i) => (
+            <div>
+              <dt>{c.caseStats[i].replace('{v}', mod.version)}</dt>
+              <dd data-count={n}>{n}</dd>
+            </div>
+          ))}
+        </dl>
+        <p class="ver mono">v{mod.version} · GPL-3.0{mod.live && (lang === 'de' ? ' · Live-Daten vom Build' : ' · live data at build time')}</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<style>
+  .method { background: linear-gradient(var(--bg), var(--bg-2) 30%, var(--bg-2) 70%, var(--bg)); }
+  .steps { list-style: none; padding: 0; margin: 56px 0 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; counter-reset: s; }
+  .steps li { position: relative; padding: 22px 20px 0 0; border-top: 1px solid var(--line-strong); }
+  .steps li::before {
+    content: ''; position: absolute; top: -5px; left: 0; width: 9px; height: 9px; border-radius: 50%;
+    background: var(--bg); border: 2px solid var(--accent);
+  }
+  .steps li:nth-child(3)::before { background: var(--accent); box-shadow: 0 0 0 5px var(--glow); }
+  .n { font-size: 0.75rem; color: var(--accent); }
+  .steps h3 { font-size: 1.15rem; margin: 8px 0 8px; }
+  .steps p { font-size: 0.9rem; color: var(--text-2); }
+
+  .case { margin-top: 72px; display: grid; grid-template-columns: 1.4fr 1fr; }
+  .case-copy { padding: clamp(24px, 4vw, 44px); display: flex; flex-direction: column; gap: 16px; }
+  .case-kicker { font-size: 0.75rem; color: var(--muted); }
+  .case h3 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); }
+  .case-lead { color: var(--text-2); max-width: 60ch; }
+  .points { list-style: none; padding: 0; margin: 8px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 16px 24px; }
+  .points li { display: flex; gap: 12px; align-items: flex-start; }
+  .points :global(svg) { width: 18px; height: 18px; color: var(--accent); flex: none; margin-top: 3px; }
+  .points strong { display: block; font-size: 0.95rem; }
+  .points span { display: block; font-size: 0.86rem; color: var(--text-2); margin-top: 2px; }
+  .links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
+
+  .case-side {
+    background: #000; color: #f4f1ea; padding: clamp(24px, 4vw, 44px); display: flex; flex-direction: column; justify-content: space-between; gap: 24px;
+    position: relative; overflow: hidden;
+  }
+  .case-side::after { content: ''; position: absolute; left: 0; bottom: 0; height: 6px; width: 45%; background: #e8834a; }
+  .kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 20px; margin: 0; }
+  .kpis div { display: flex; flex-direction: column-reverse; gap: 6px; }
+  .kpis dd { margin: 0; font: 700 clamp(2.4rem, 5vw, 3.6rem)/1 var(--font-display); letter-spacing: -0.03em; }
+  .kpis div:first-child dd { color: #e8834a; }
+  .kpis dt { font-size: 0.82rem; color: #a7ab8c; }
+  .ver { font-size: 0.74rem; color: #8b877f; }
+
+  @media (max-width: 1000px) {
+    .steps { grid-template-columns: 1fr; gap: 0; border-left: 1px solid var(--line-strong); margin-left: 4px; }
+    .steps li { border-top: 0; padding: 0 0 26px 26px; }
+    .steps li::before { top: 4px; left: -6px; }
+    .case { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) { .points { grid-template-columns: 1fr; } }
+</style>
