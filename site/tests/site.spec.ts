@@ -88,3 +88,12 @@ test('SEO basics: canonical, hreflang, sitemap', async ({ page, request }) => {
   await expect(page.locator('link[hreflang="en"]')).toHaveAttribute('href', 'https://umut-aslan.dev/en/');
   expect((await request.get('/sitemap-index.xml')).ok()).toBe(true);
 });
+
+test('printable CV page renders from the same content', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('link', { name: /Lebenslauf ansehen/ }).click();
+  await expect(page.getByRole('heading', { level: 1, name: 'Umut Aslan' })).toBeVisible();
+  await expect(page.getByRole('img', { name: 'Umut Aslan' })).toBeVisible();
+  await expect(page.getByText('Conway’s Game of Life')).toBeVisible();
+  await expect(page.getByText('Studium Informatik – abgeschlossen')).toBeVisible();
+});

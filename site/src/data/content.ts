@@ -202,7 +202,7 @@ export const jobs: Job[] = [
     role: { de: 'Full-Stack-Entwickler', en: 'Full-Stack Developer' },
     org: 'Leue & Nill GmbH',
     place: 'Dortmund',
-    stack: ['Angular', 'TypeScript', 'C#', '.NET', 'EF Core', 'PostgreSQL', 'Azure DevOps'],
+    stack: ['Angular', 'TypeScript', 'Transloco', 'C#', '.NET', 'EF Core', 'PostgreSQL', 'Azure DevOps'],
     points: {
       de: [
         'Entwicklung eines Maklerverwaltungsportals: Seiten nach UI/UX-Vorgaben mit Formularen, Validierung und REST-Anbindung.',
@@ -248,7 +248,7 @@ export const jobs: Job[] = [
 ];
 
 export const education = [
-  { period: { de: 'seit WS 2017/18', en: 'since 2017' }, title: { de: 'Studium Informatik', en: 'Computer Science' }, org: 'TU Dortmund' },
+  { period: { de: 'ab WS 2017/18', en: 'from 2017' }, title: { de: 'Studium Informatik – abgeschlossen', en: 'Computer Science – completed' }, org: 'TU Dortmund' },
   { period: { de: '', en: '' }, title: { de: 'Abitur', en: 'Abitur (A-levels)' }, org: 'Euregio Gymnasium Bocholt' },
 ];
 
@@ -341,6 +341,7 @@ export const t = {
       skills: 'Kenntnisse',
       langs: 'Sprachen',
       now: 'heute',
+      download: 'Lebenslauf ansehen & als PDF speichern',
       about: 'Über mich',
       aboutText: 'Geboren in Bocholt, Informatikstudium an der TU Dortmund, seit 2024 Full-Stack-Entwickler. Abseits des Codes: Spieleentwicklung, Klavier, Geocaching, Lesen und Fitnessstudio.',
     },
@@ -427,6 +428,7 @@ export const t = {
       skills: 'Skills',
       langs: 'Languages',
       now: 'present',
+      download: 'Printable CV (German, PDF)',
       about: 'About me',
       aboutText: 'Born in Bocholt, studied computer science at TU Dortmund, full-stack developer since 2024. Away from code: game development, piano, geocaching, reading and the gym.',
     },
@@ -444,3 +446,16 @@ export const t = {
 };
 
 export type Copy = (typeof t)['de'];
+
+/** Project overview for the printable CV (/lebenslauf). */
+export const cvProjects: { title: string; tag: string; text: string }[] = [
+  { title: 'SkulInsight QoL', tag: 'C# · BepInEx · Harmony · veröffentlicht', text: 'Mod für „Skul: The Hero Slayer“, agentisch entwickelt: echte Schadenswerte, Kampf-Log mit JSON-Export, Bestiarium, 11 Sprachen. Selbsttest aller Hooks beim Start, eigenes Testprojekt, regelmäßige Releases auf Thunderstore.' },
+  { title: 'umut-aslan.dev', tag: 'Astro · TypeScript · Docker · Traefik', text: 'Portfolio und eigene Infrastruktur: zweisprachige Seite, Playwright-Tests gegen das Produktions-Image, Container hinter Traefik mit automatischem HTTPS.' },
+  { title: 'GlobalPenfriends', tag: '.NET MAUI · C#', text: 'Plattformübergreifende App mit Registrierung, Profilen, Suche, Direktnachrichten und Monetarisierung.' },
+  { title: 'Conway’s Game of Life', tag: 'C# · WPF', text: 'Simulation mit wählbaren Regelwerken als Konsolenanwendung und WPF-Oberfläche (Spielfeld, Geschwindigkeit, Zellen per Mausklick), inklusive Testprojekt.' },
+  { title: 'Splendor', tag: 'Java · Uni, 9er-Team', text: 'Brettspiel mit vollständigem Regelwerk, GUI und drei KI-Stufen (Zufall, Greedy, Minimax mit variabler Tiefe); Spielstand jederzeit speicher- und ladbar.' },
+  { title: 'Terminverwaltung Arztpraxis', tag: 'Java · Uni, 9er-Team', text: 'Planung mit UML, Umsetzung im Team über GitHub: Patienten anlegen, bearbeiten, löschen, Termine je Patient.' },
+  { title: 'Face Mask Recognition', tag: 'Python · PyTorch · Uni', text: 'Bildklassifikation (Maske ja/nein) auf über 4.000 Bildern mit Merkmalsvektoren und k-Nearest-Neighbour.' },
+  { title: 'HTTP-Server', tag: 'Java · Uni', text: 'Server auf Socket-Ebene, der HTTP-Requests protokollgerecht beantwortet (Statuscodes, Payload).' },
+  { title: 'Lego-Roboter', tag: 'C · Embedded · Uni', text: 'Aufgaben mit Sensorik im Hardware-Praktikum und Modul Embedded Systems, inklusive konkurrierender Zugriffe auf gemeinsame Ressourcen.' },
+];

@@ -1,4 +1,5 @@
 ---
+import Icon from './Icon.astro';
 import { t, jobs, education, skills, languages, type Lang } from '../data/content';
 
 interface Props { lang: Lang; }
@@ -10,6 +11,7 @@ const period = (p: string) => (p.endsWith('–') ? `${p} ${c.now}` : p);
   <div class="wrap">
     <p class="eyebrow reveal"><b>05</b>{c.title}</p>
     <h2 id="cv-title" class="sr-only">{c.title}</h2>
+    <a class="btn cv-link reveal" href="/lebenslauf/">{c.download}<Icon name="arrow" /></a>
 
     <div class="layout">
       <div class="main">
@@ -68,6 +70,7 @@ const period = (p: string) => (p.endsWith('–') ? `${p} ${c.now}` : p);
 </section>
 
 <style>
+  .cv-link { margin-top: 28px; }
   .layout { display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(40px, 6vw, 80px); margin-top: 40px; }
   /* CV-style headings: small caps, centered on a hairline. */
   .rule {
