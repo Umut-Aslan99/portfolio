@@ -68,10 +68,10 @@ export const projects: Project[] = [
     title: 'Lager-Scan',
     url: 'https://angular.umut-aslan.dev',
     host: 'angular.umut-aslan.dev',
-    status: 'planned',
+    status: 'live',
     frontend: 'Angular · PWA',
     backend: 'Java · Spring Boot',
-    extras: ['Barcode', { de: 'Kamera', en: 'Camera' }, 'Offline-Sync'],
+    extras: ['Barcode', { de: 'Kamera', en: 'Camera' }, 'Offline-Sync', 'PostgreSQL', { de: 'Live-Feed (SSE)', en: 'Live feed (SSE)' }],
     solves: 'cart',
     summary: {
       de: 'Maschinenteile per Smartphone scannen, fotografieren und buchen – auch ohne WLAN in der Halle. Synchronisiert automatisch, sobald wieder Netz da ist.',
@@ -478,6 +478,8 @@ export type Copy = (typeof t)['de'];
 /** Project overview for the printable CV (/lebenslauf). */
 export const cvProjects: { title: string; tag: string; text: string }[] = [
   { title: 'Einsatz – Serviceberichte (svelte.umut-aslan.dev)', tag: 'SvelteKit-BFF · C# ASP.NET Core · GraphQL · PostgreSQL · Docker', text: 'Offlinefähige Techniker-App mit Freigabe-Workflow, ERP-Export (XML) und DMS-Ablage (PDF). Architektur Frontend · Backend-for-Frontend · Backend; idempotente Offline-Synchronisation; 33 automatisierte Tests (xUnit, Vitest, Playwright); CI/CD, ADRs.' },
+  { title: 'ERP-Cockpit (react.umut-aslan.dev)', tag: 'React · TypeScript · C# ASP.NET Core · EF Core · PostgreSQL', text: 'Import von ERP-Exporten (CSV/Excel, Zeichensatz- und Zahlenformat-Erkennung, automatische Spaltenzuordnung, Prüfung mit Fehlerbericht, Rücknahme) und Kennzahlen wie Lagerumschlag, Ladenhüter, Auftragsrückstand und Liefertreue mit Drill-down und Excel-Export. Privater Arbeitsbereich je Besucher; 67 automatisierte Tests.' },
+  { title: 'Lager-Scan (angular.umut-aslan.dev)', tag: 'Angular · Java Spring Boot · PostgreSQL · PWA', text: 'Smartphone als Barcode-Scanner fürs Ersatzteillager statt „PC auf Rollwagen“: Kamera-Scan (BarcodeDetector/jsQR) und Handscanner, Buchungen auch ohne Netz (IndexedDB-Outbox, idempotente API), Leitstand mit Live-Feed per Server-Sent Events, Handy-Kopplung per QR-Code. 35 automatisierte Tests (JUnit, Vitest, Playwright inkl. künstlicher Kamera).' },
   { title: 'SkulInsight QoL', tag: 'C# · BepInEx · Harmony · veröffentlicht', text: 'Mod für „Skul: The Hero Slayer“, agentisch entwickelt: echte Schadenswerte, Kampf-Log mit JSON-Export, Bestiarium, 11 Sprachen. Selbsttest aller Hooks beim Start, eigenes Testprojekt, regelmäßige Releases auf Thunderstore.' },
   { title: 'umut-aslan.dev', tag: 'Astro · TypeScript · Docker · Traefik', text: 'Portfolio und eigene Infrastruktur: zweisprachige Seite, Playwright-Tests gegen das Produktions-Image, Container hinter Traefik mit automatischem HTTPS.' },
   { title: 'GlobalPenfriends', tag: '.NET MAUI · C#', text: 'Plattformübergreifende App mit Registrierung, Profilen, Suche, Direktnachrichten und Monetarisierung.' },
