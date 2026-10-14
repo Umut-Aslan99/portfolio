@@ -53,10 +53,10 @@ export const projects: Project[] = [
     title: 'ERP-Cockpit',
     url: 'https://react.umut-aslan.dev',
     host: 'react.umut-aslan.dev',
-    status: 'planned',
+    status: 'live',
     frontend: 'React · TypeScript',
     backend: 'C# · ASP.NET Core',
-    extras: ['PostgreSQL', 'EF Core', 'OpenAPI'],
+    extras: ['PostgreSQL', 'EF Core', 'Excel-Import', 'TanStack', 'Recharts'],
     solves: 'erp',
     summary: {
       de: 'Kundendaten aus ERP-Exporten (CSV, Excel, SQL-Dumps) importieren, bereinigen und als Dashboards für Lagerumschlag, Auftragsrückstand und Liefertreue aufbereiten.',
