@@ -43,6 +43,7 @@ export const projects: Project[] = [
     backend: 'C# · ASP.NET Core',
     extras: ['GraphQL', 'EF Core', 'PostgreSQL', 'Offline-PWA', 'Playwright'],
     solves: 'paper',
+    repo: 'https://github.com/Umut-Aslan99/einsatz',
     summary: {
       de: 'Techniker erfassen Zeit, Material, Fotos und Unterschrift auf dem Tablet – auch ohne Netz. Der Innendienst gibt frei, der Beleg geht ins ERP, das PDF ins DMS. Architektur: Frontend · Backend-for-Frontend · Backend.',
       en: 'Technicians record time, material, photos and the customer signature on a tablet – even offline. The office approves, the voucher goes to the ERP, the PDF to the DMS. Architecture: frontend · backend-for-frontend · backend.',
@@ -58,6 +59,7 @@ export const projects: Project[] = [
     backend: 'C# · ASP.NET Core',
     extras: ['PostgreSQL', 'EF Core', 'Excel-Import', 'TanStack', 'Recharts'],
     solves: 'erp',
+    repo: 'https://github.com/Umut-Aslan99/erp-cockpit',
     summary: {
       de: 'Kundendaten aus ERP-Exporten (CSV, Excel, SQL-Dumps) importieren, bereinigen und als Dashboards für Lagerumschlag, Auftragsrückstand und Liefertreue aufbereiten.',
       en: 'Import customer data from ERP exports (CSV, Excel, SQL dumps), clean it, and turn it into dashboards for stock turnover, order backlog and delivery reliability.',
@@ -73,6 +75,7 @@ export const projects: Project[] = [
     backend: 'Java · Spring Boot',
     extras: ['Barcode', { de: 'Kamera', en: 'Camera' }, 'Offline-Sync', 'PostgreSQL', { de: 'Live-Feed (SSE)', en: 'Live feed (SSE)' }],
     solves: 'cart',
+    repo: 'https://github.com/Umut-Aslan99/lager-scan',
     summary: {
       de: 'Maschinenteile per Smartphone scannen, fotografieren und buchen – auch ohne WLAN in der Halle. Synchronisiert automatisch, sobald wieder Netz da ist.',
       en: 'Scan, photograph and book machine parts from a phone – even without Wi-Fi in the hall. Syncs automatically once the connection is back.',
@@ -88,6 +91,7 @@ export const projects: Project[] = [
     backend: 'C# · .NET',
     extras: ['Excel-Import', { de: 'Rollen & Rechte', en: 'Roles & permissions' }, 'Audit-Log'],
     solves: 'legacy',
+    repo: 'https://github.com/Umut-Aslan99/kalkulation',
     summary: {
       de: 'Ein typisches Makro-Werkzeug (Kalkulation mit VBA) Schritt für Schritt in eine Mehrbenutzer-Webanwendung überführt – mit Vorher/Nachher-Vergleich.',
       en: 'A typical macro tool (VBA-based costing sheet) migrated step by step into a multi-user web app – with a before/after comparison.',
@@ -103,6 +107,7 @@ export const projects: Project[] = [
     backend: 'Python · FastAPI',
     extras: ['MQTT', 'WebSockets', 'TimescaleDB', 'Web Push'],
     solves: 'machines',
+    repo: 'https://github.com/Umut-Aslan99/maschinen-monitor',
     summary: {
       de: 'Simulierte Maschinen senden Telemetrie per MQTT. Live-Dashboard mit OEE, Stillstandsgründen und Alarmen in Echtzeit.',
       en: 'Simulated machines stream telemetry over MQTT. Live dashboard with OEE, downtime reasons and real-time alerts.',
@@ -132,6 +137,7 @@ export const projects: Project[] = [
     frontend: 'Web-Dashboard',
     backend: 'Docker API',
     extras: ['Traefik', { de: 'Live-Daten', en: 'Live data' }],
+    repo: 'https://github.com/Umut-Aslan99/status-dashboard',
     summary: {
       de: 'Zeigt live, welche Dienste dieser Infrastruktur laufen – die Betriebsseite hinter allen Subdomains.',
       en: 'Shows live which services of this infrastructure are running – the operations view behind every subdomain.',
