@@ -1,0 +1,5 @@
+# Security contact for umut-aslan.dev and its subdomains (RFC 9116).
+Contact: mailto:umut.aslan99@outlook.de
+Expires: 2027-10-20T00:00:00.000Z
+Preferred-Languages: de, en
+Canonical: https://umut-aslan.dev/.well-known/security.txt
